@@ -322,11 +322,19 @@ export const DashboardLayout = ({
         >
           <div className="flex items-center justify-between gap-2 border-b border-[#272732]/16 px-3.5 py-3.5 dark:border-[#2D2D3A]/30">
             {!collapsed && (
-              <div className="min-w-0">
-                <div className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#8A621C] dark:text-[#E8C987]">
-                  {getRoleLabel(currentUser.role)} Portal
+              <div className="flex min-w-0 items-center gap-2.5">
+                <img
+                  src="/assets/aistudio/EventSphere__Explore__Connect__Grow_5a72bbea.png"
+                  alt="EventSphere"
+                  referrerPolicy="no-referrer"
+                  className="h-8 w-auto shrink-0 rounded-md border border-[#D4AF63]/35 bg-[#050507] object-contain"
+                />
+                <div className="min-w-0">
+                  <div className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#8A621C] dark:text-[#E8C987]">
+                    {getRoleLabel(currentUser.role)} Portal
+                  </div>
+                  <div className="truncate font-display text-sm font-bold">{roleTitle}</div>
                 </div>
-                <div className="truncate font-display text-sm font-bold">{roleTitle}</div>
               </div>
             )}
             <Button
@@ -376,11 +384,19 @@ export const DashboardLayout = ({
           >
             <div className="flex h-full w-72 flex-col border-r border-[#272732]/20 bg-[#FFFFFF] text-[#0B0B0E] dark:border-[#2D2D3A]/38 dark:bg-[#0B0B0E] dark:text-[#F2F3F7]">
               <div className="flex items-center justify-between border-b border-[#272732]/16 px-4 py-4 dark:border-[#2D2D3A]/30">
-                <div>
-                  <div className="font-mono text-[10px] font-bold uppercase text-[#8A621C] dark:text-[#E8C987]">
-                    {getRoleLabel(currentUser.role)} Portal
+                <div className="flex items-center gap-2.5">
+                  <img
+                    src="/assets/aistudio/EventSphere__Explore__Connect__Grow_5a72bbea.png"
+                    alt="EventSphere"
+                    referrerPolicy="no-referrer"
+                    className="h-8 w-auto shrink-0 rounded-md border border-[#D4AF63]/35 bg-[#050507] object-contain"
+                  />
+                  <div>
+                    <div className="font-mono text-[10px] font-bold uppercase text-[#8A621C] dark:text-[#E8C987]">
+                      {getRoleLabel(currentUser.role)} Portal
+                    </div>
+                    <div className="font-display text-base font-bold">{roleTitle}</div>
                   </div>
-                  <div className="font-display text-base font-bold">{roleTitle}</div>
                 </div>
                 <Button
                   variant="icon"

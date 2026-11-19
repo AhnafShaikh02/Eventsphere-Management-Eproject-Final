@@ -499,10 +499,18 @@ export const AuthModal = ({
           </form>
         </div>
       ) : step === 'role-select' ? (
-        <div className="space-y-6">
-          <p className="text-sm text-[#525463] dark:text-[#9497A6]">
-            Select your role to enter a tailored workspace, or launch a verified demo account immediately.
-          </p>
+        <div className="space-y-5">
+          <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[#D4AF63]/30 bg-[#050507] p-3.5 text-[#F2F3F7]">
+            <img
+              src="/assets/aistudio/EventSphere__Explore__Connect__Grow_5a72bbea.png"
+              alt="EventSphere — Explore, Connect, Grow"
+              referrerPolicy="no-referrer"
+              className="h-20 w-auto rounded-lg object-contain"
+            />
+            <p className="max-w-xs text-xs leading-relaxed text-[#B8BAC8]">
+              Select your role to enter a tailored workspace, or launch a verified demo account immediately.
+            </p>
+          </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
             {ROLE_CARDS.map((card) => {

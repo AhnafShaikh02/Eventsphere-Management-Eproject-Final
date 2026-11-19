@@ -132,15 +132,14 @@ export const TopNav = ({
             onChangeView('voyage');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          className="inline-flex items-center gap-2.5 font-display text-lg font-extrabold tracking-tight whitespace-nowrap shrink-0 text-[#0B0B0E] transition-colors hover:text-[#8A621C] dark:text-[#F8F9FC] dark:hover:text-[#E8C987]"
+          aria-label="EventSphere — Explore, Connect, Grow"
+          className="inline-flex items-center gap-2.5 font-display text-lg font-extrabold tracking-tight whitespace-nowrap shrink-0 text-[#0B0B0E] transition-opacity hover:opacity-90 dark:text-[#F8F9FC]"
         >
-          <span
-            aria-hidden="true"
-            className="h-5 w-5 rounded-full shadow-[0_0_16px_rgba(232,201,135,0.65)]"
-            style={{
-              background:
-                'radial-gradient(circle at 32% 30%, #FFF7E0 0%, #F0D290 36%, #9E7836 74%, #1A1307 100%)',
-            }}
+          <img
+            src="/assets/aistudio/EventSphere__Explore__Connect__Grow_5a72bbea.png"
+            alt="EventSphere — Explore, Connect, Grow"
+            referrerPolicy="no-referrer"
+            className="h-9 w-auto rounded-lg border border-[#D4AF63]/40 bg-[#050507] object-contain shadow-[0_0_16px_rgba(232,201,135,0.35)]"
           />
           <span>EventSphere</span>
         </button>

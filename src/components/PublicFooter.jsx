@@ -14,17 +14,12 @@ export const PublicFooter = ({
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2.5 font-display text-lg font-extrabold tracking-tight">
-              <span
-                aria-hidden="true"
-                className="h-5 w-5 rounded-full shadow-[0_0_16px_rgba(232,201,135,0.55)]"
-                style={{
-                  background:
-                    'radial-gradient(circle at 32% 30%, #FFF7E0 0%, #F0D290 36%, #9E7836 74%, #1A1307 100%)',
-                }}
-              />
-              <span>EventSphere</span>
-            </div>
+            <img
+              src="/assets/aistudio/EventSphere__Explore__Connect__Grow_5a72bbea.png"
+              alt="EventSphere — Explore, Connect, Grow"
+              referrerPolicy="no-referrer"
+              className="h-24 w-auto rounded-xl border border-[#D4AF63]/40 bg-[#050507] object-contain shadow-[0_10px_28px_rgba(212,175,99,0.22)]"
+            />
             <p className="text-xs leading-relaxed text-[#525463] dark:text-[#9497A6]">
               Enterprise 3D exhibition operations platform uniting organizers, verified exhibitors,
               and attendees on one live synchronized floor plan.
