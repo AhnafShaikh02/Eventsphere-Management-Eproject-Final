@@ -7,6 +7,7 @@ export const PublicFooter = ({
   onOpenAnalytics,
   onOpenPortal,
   onOpenSupport,
+  onOpenDocs,
 }) => {
   return (
     <footer className="pointer-events-auto relative z-10 border-t border-[#272732]/18 bg-[#F8F8FB]/95 text-[#0B0B0E] dark:border-[#2D2D3A]/36 dark:bg-[#0B0B0E]/96 dark:text-[#F2F3F7]">
@@ -152,6 +153,28 @@ export const PublicFooter = ({
                   Platform FAQ &amp; Security
                 </button>
               </li>
+              {onOpenDocs && (
+                <>
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => onOpenDocs('video')}
+                      className="hover:text-[#8A621C] dark:hover:text-[#E8C987]"
+                    >
+                      Walkthrough Video (1080p)
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => onOpenDocs('user')}
+                      className="hover:text-[#8A621C] dark:hover:text-[#E8C987]"
+                    >
+                      User &amp; Developer Docs
+                    </button>
+                  </li>
+                </>
+              )}
               <li className="text-[#525463] dark:text-[#9497A6]">
                 Automated 7-Day Snapshots &amp; GDPR Consent
               </li>

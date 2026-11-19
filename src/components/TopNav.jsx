@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Bookmark,
+  BookOpen,
   ChevronDown,
   Cloud,
   LayoutDashboard,
@@ -27,6 +28,7 @@ export const TopNav = ({
   onOpenSearch,
   onOpenAuth,
   onOpenCloudSync,
+  onOpenDocs,
   onToggleNightMode,
   onLogout,
 }) => {
@@ -179,6 +181,18 @@ export const TopNav = ({
           >
             <Search className="h-3.5 w-3.5 text-[#8A621C] dark:text-[#E8C987]" />
           </Button>
+
+          {onOpenDocs && (
+            <Button
+              variant="icon"
+              size="sm"
+              onClick={() => onOpenDocs('video')}
+              title="Docs, Tutorials, FAQs & Walkthrough Video"
+              aria-label="Open documentation and walkthrough video"
+            >
+              <BookOpen className="h-3.5 w-3.5 text-[#8A621C] dark:text-[#E8C987]" />
+            </Button>
+          )}
 
           <Button
             variant="icon"

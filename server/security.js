@@ -1,15 +1,68 @@
 import crypto from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const PII_PREFIX = 'enc:v1:';
-const RAW_SECRET = process.env.DATA_ENCRYPTION_KEY || process.env.JWT_SECRET;
+const runtimeSecretCache = new Map();
 
-if (!RAW_SECRET || RAW_SECRET.length < 32) {
-  console.error(
-    '[EventSphere] FATAL: DATA_ENCRYPTION_KEY (or JWT_SECRET) must be set to a random value of at least 32 characters.\n' +
-      '              Run "npm run setup:env" to generate a .env file with secure random secrets.',
-  );
-  process.exit(1);
+function loadOrCreateRuntimeSecrets() {
+  const dataDir = path.resolve(process.cwd(), process.env.EVENTSPHERE_DATA_DIR || '.data');
+  const secretsFile = path.join(dataDir, '.runtime-secrets.json');
+  try {
+    if (fs.existsSync(secretsFile)) {
+      const parsed = JSON.parse(fs.readFileSync(secretsFile, 'utf8'));
+      if (parsed && typeof parsed === 'object') {
+        return parsed;
+      }
+    }
+  } catch {
+    // Ignore read errors and regenerate
+  }
+
+  const generated = {
+    JWT_SECRET: crypto.randomBytes(32).toString('hex'),
+    DATA_ENCRYPTION_KEY: crypto.randomBytes(32).toString('hex'),
+    ORGANIZER_SETUP_CODE: `ORG-${crypto.randomBytes(6).toString('hex').toUpperCase()}`,
+  };
+
+  try {
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    fs.writeFileSync(secretsFile, JSON.stringify(generated, null, 2), { encoding: 'utf8', mode: 0o600 });
+  } catch {
+    // Ephemeral in-memory fallback if filesystem is read-only
+  }
+  return generated;
 }
+
+export function resolveRuntimeSecret(name, minLength = 12) {
+  const envValue = String(process.env[name] || '').trim();
+  if (envValue.length >= minLength) {
+    return envValue;
+  }
+  if (runtimeSecretCache.has(name)) {
+    return runtimeSecretCache.get(name);
+  }
+  const persisted = loadOrCreateRuntimeSecrets();
+  let resolved = String(persisted[name] || '').trim();
+  if (resolved.length < minLength) {
+    resolved =
+      name === 'ORGANIZER_SETUP_CODE'
+        ? `ORG-${crypto.randomBytes(6).toString('hex').toUpperCase()}`
+        : crypto.randomBytes(32).toString('hex');
+  }
+  runtimeSecretCache.set(name, resolved);
+  console.warn(`[EventSphere] WARNING: ${name} is not set in environment — using auto-generated runtime secret.`);
+  return resolved;
+}
+
+const RAW_SECRET =
+  String(process.env.DATA_ENCRYPTION_KEY || '').trim().length >= 32
+    ? String(process.env.DATA_ENCRYPTION_KEY).trim()
+    : String(process.env.JWT_SECRET || '').trim().length >= 32
+      ? String(process.env.JWT_SECRET).trim()
+      : resolveRuntimeSecret('DATA_ENCRYPTION_KEY', 32);
 
 const DERIVED_KEY = crypto.scryptSync(RAW_SECRET, 'eventsphere-pii-v1-salt', 32);
 

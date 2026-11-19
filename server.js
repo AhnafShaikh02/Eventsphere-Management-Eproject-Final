@@ -35,6 +35,7 @@ import {
   hashOtp,
   hashResetSessionToken,
   isSecureRequest,
+  resolveRuntimeSecret,
   securityHeadersMiddleware,
   validatePasswordStrength,
   verifyHashEqual,
@@ -43,20 +44,8 @@ import {
 const PORT = Number(process.env.PORT || 3000);
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
-// No hard-coded fallback secrets: the server refuses to start unless they are provided via .env / environment.
-function requireSecret(name, minLength) {
-  const value = String(process.env[name] || '').trim();
-  if (value.length < minLength) {
-    console.error(
-      `[EventSphere] FATAL: ${name} is missing or too short (minimum ${minLength} characters).\n` +
-        '              Run "npm run setup:env" to generate a .env file with secure random secrets.',
-    );
-    process.exit(1);
-  }
-  return value;
-}
-const JWT_SECRET = requireSecret('JWT_SECRET', 32);
-const ORGANIZER_SETUP_CODE = requireSecret('ORGANIZER_SETUP_CODE', 12);
+const JWT_SECRET = resolveRuntimeSecret('JWT_SECRET', 32);
+const ORGANIZER_SETUP_CODE = resolveRuntimeSecret('ORGANIZER_SETUP_CODE', 12);
 
 // CORS for Socket.io: same-origin only unless CLIENT_ORIGIN lists extra origins (comma separated).
 const ALLOWED_ORIGINS = String(process.env.CLIENT_ORIGIN || '')
@@ -786,14 +775,6 @@ async function startServer() {
 
   const mongoConnected = await connectMongoStore();
   if (!mongoConnected) {
-    if (IS_PRODUCTION && process.env.EVENTSPHERE_DISABLE_MONGO !== 'true') {
-      console.error(
-        '[EventSphere] FATAL: MongoDB is the primary database but no connection could be made.\n' +
-          '              Set MONGODB_URI in .env (e.g. a MongoDB Atlas connection string).\n' +
-          '              For local JSON-file mode only, set EVENTSPHERE_DISABLE_MONGO=true.',
-      );
-      process.exit(1);
-    }
     console.warn(
       '[EventSphere] WARNING: running WITHOUT MongoDB (local JSON-file fallback). Set MONGODB_URI to use MongoDB.',
     );

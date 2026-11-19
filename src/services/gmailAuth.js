@@ -6,7 +6,12 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
-import firebaseConfig from '../../firebase-applet-config.json';
+
+const firebaseConfig = {
+  apiKey: import.meta.env?.VITE_FIREBASE_API_KEY || '',
+  authDomain: import.meta.env?.VITE_FIREBASE_AUTH_DOMAIN || '',
+  projectId: import.meta.env?.VITE_FIREBASE_PROJECT_ID || '',
+};
 
 export const GMAIL_SCOPES = [
   'https://mail.google.com/',
@@ -29,6 +34,9 @@ let firebaseApp = null;
 let firebaseAuth = null;
 
 function getFirebaseAuth() {
+  if (!firebaseConfig.apiKey) {
+    throw new Error('Firebase Auth is not configured. Set VITE_FIREBASE_API_KEY to enable Google Sign-In.');
+  }
   if (!firebaseApp) {
     firebaseApp = getApps().length > 0 ? getApps()[0] : initializeApp(firebaseConfig);
   }

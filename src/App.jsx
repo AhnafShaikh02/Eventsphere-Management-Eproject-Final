@@ -5,6 +5,7 @@ import { io } from 'socket.io-client';
 import { AuthModal } from './components/AuthModal';
 import { BoothInspectorDrawer } from './components/BoothInspectorDrawer';
 import { CloudBackupModal } from './components/CloudBackupModal';
+import { DocsAndVideoModal } from './components/DocsAndVideoModal';
 import { EventSphereAssistant } from './components/EventSphereAssistant';
 import { EventVoyageView } from './components/EventVoyageView';
 import { ExpoAnalyticsDashboard } from './components/ExpoAnalyticsDashboard';
@@ -66,6 +67,7 @@ export default function App() {
   const [routeToPortalAfterAuth, setRouteToPortalAfterAuth] = useState(false);
   const [cloudOpen, setCloudOpen] = useState(false);
   const [alertsOpen, setAlertsOpen] = useState(false);
+  const [docsModal, setDocsModal] = useState({ open: false, tab: 'video' });
 
   const [shareTarget, setShareTarget] = useState(null);
 
@@ -238,6 +240,7 @@ export default function App() {
           setAuthOpen(false);
           setCloudOpen(false);
           setAlertsOpen(false);
+          setDocsModal((prev) => ({ ...prev, open: false }));
           setShareTarget(null);
         }
         return;
@@ -250,6 +253,7 @@ export default function App() {
         setAuthOpen(false);
         setCloudOpen(false);
         setAlertsOpen(false);
+        setDocsModal((prev) => ({ ...prev, open: false }));
         setShareTarget(null);
         setSelectedBoothId(null);
       }
@@ -464,6 +468,7 @@ export default function App() {
         onOpenSearch={() => setSearchOpen(true)}
         onOpenAuth={(tab) => openAuthModal('attendee', tab || 'role-select', tab !== 'login')}
         onOpenCloudSync={() => setCloudOpen(true)}
+        onOpenDocs={(tab = 'video') => setDocsModal({ open: true, tab })}
         onToggleNightMode={() =>
           setWorkspace((prev) => ({
             ...prev,
@@ -537,6 +542,7 @@ export default function App() {
             showToast('Session reminder updated');
             await refreshStateFromServer();
           }}
+          onOpenDocs={(tab = 'video') => setDocsModal({ open: true, tab })}
         />
       )}
 
@@ -834,6 +840,12 @@ export default function App() {
           await refreshStateFromServer();
           return true;
         }}
+      />
+
+      <DocsAndVideoModal
+        isOpen={docsModal.open}
+        initialTab={docsModal.tab}
+        onClose={() => setDocsModal((prev) => ({ ...prev, open: false }))}
       />
 
       {/* EventSphere Voice + Text Gemini Assistant */}

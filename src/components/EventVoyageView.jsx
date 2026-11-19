@@ -52,6 +52,7 @@ export const EventVoyageView = ({
   onSelectBooth,
   onRegisterExpo,
   onToggleSessionBookmark,
+  onOpenDocs,
 }) => {
   const rootRef = useRef(null);
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -1103,6 +1104,7 @@ export const EventVoyageView = ({
           currentUser ? onOpenPortals(role || currentUser.role) : onOpenAuth(role || 'attendee', 'role-select')
         }
         onOpenSupport={onOpenNotifications}
+        onOpenDocs={onOpenDocs}
       />
     </div>
   );
